@@ -1,0 +1,8 @@
+{
+  "selector": "more_docking_connectors:paired_docking_kinetic_connector",
+
+  "properties": {
+    "sable:mass": 0.5,
+    "sable:volume": 0.5
+  }
+}

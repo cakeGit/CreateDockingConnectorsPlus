@@ -1,0 +1,8 @@
+{
+  "values": [
+    "more_docking_connectors:docking_pipe_connector",
+    "more_docking_connectors:paired_docking_pipe_connector",
+    "more_docking_connectors:docking_kinetic_connector",
+    "more_docking_connectors:paired_docking_kinetic_connector"
+  ]
+}

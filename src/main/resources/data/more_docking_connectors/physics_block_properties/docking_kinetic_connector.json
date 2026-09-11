@@ -1,0 +1,15 @@
+{
+  "selector": "more_docking_connectors:docking_kinetic_connector",
+
+  "properties": {
+    "sable:mass": 1.0,
+    "sable:volume": 1.0
+  },
+
+  "overrides": {
+    "extended=true": {
+      "sable:mass": 0.5,
+      "sable:volume": 0.5
+    }
+  }
+}

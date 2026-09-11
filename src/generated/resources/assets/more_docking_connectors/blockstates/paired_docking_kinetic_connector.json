@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "more_docking_connectors:block/docking_kinetic_connector/block"
+    }
+  }
+}

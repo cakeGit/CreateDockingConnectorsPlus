@@ -1,0 +1,34 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+.env
+
+.vscode/
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# But keep code styles and inspection profiles
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+runs
+run-data
+
+repo

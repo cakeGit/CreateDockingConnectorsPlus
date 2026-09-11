@@ -1,0 +1,218 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.140'
+    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
+    id 'net.azmod.release' version '0.2.1'
+}
+
+def isSnapshotVersioning = project.hasProperty('snapshot_versioning') && project.property('snapshot_versioning').toString().toBoolean()
+version = isSnapshotVersioning ? "${mod_version}-SNAPSHOT" : mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    maven { url 'https://maven.neoforged.net/releases' }
+    maven { url 'https://maven.createmod.net' }
+    maven {
+        name = 'azmod-maven'
+        url = "https://maven.azmod.net/releases"
+    }
+    maven {
+        name = 'azmod-maven-snapshots'
+        url = "https://maven.azmod.net/snapshots"
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'azmod-modmaven-mirror'
+                url = "https://maven.azmod.net/modmaven"
+
+                if (findProperty('azmodMavenUser') != null) {
+                    // Credentials purely required for adding new mods to cache, you will still be able to get stuff from modmaven itself / existing cache.
+                    credentials {
+                        username = findProperty('azmodMavenUser') ?: System.getenv('AZMOD_MAVEN_USER')
+                        password = findProperty('azmodMavenToken') ?: System.getenv('AZMOD_MAVEN_PASSWORD')
+                    }
+                }
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://maven.ryanhcode.dev/releases"
+                name = "RyanHCode Maven"
+            }
+        }
+        filter {
+            includeGroup("dev.simulated_team.simulated")
+            includeGroup("dev.ryanhcode.sable")
+            includeGroup("dev.ryanhcode.sable-companion")
+            includeGroup("dev.eriksonn.aeronautics")
+        }
+    }
+    maven { url = 'https://mvn.devos.one/snapshots' }
+    maven { url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' }
+    maven {
+        name = 'BlameJared Maven (CrT / Bookshelf)'
+        url = 'https://maven.blamejared.com'
+    }
+    maven { url = 'https://maven.theillusivec4.top/' }
+    maven {
+        url = 'https://maven.squiddev.cc'
+        content {
+            includeGroup("cc.tweaked")
+        }
+    }
+}
+
+neoForge {
+    version = neo_version
+
+    runs {
+        client {
+            client()
+            systemProperty 'mixin.debug.verbose', 'true'
+            systemProperty 'mixin.debug.verify', 'true'
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        data {
+            data()
+            programArguments.addAll '--existing-mod', 'create'
+            programArguments.addAll '--existing-mod', 'simulated'
+            programArguments.addAll '--mod', mod_id as String,
+                    '--all',
+                    '--output', file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', file('src/main/resources/').getAbsolutePath()
+
+            systemProperty 'net.minecraft.data.Main.parallel', 'false'
+        }
+    }
+    mods {
+        more_docking_connectors {
+            sourceSet project.sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+// Optional deps visible at runtime in dev but not published as required deps.
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
+
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    compileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    // Create's own runtime requirements (our create dep is transitive=false).
+    localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    localRuntime("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    // Hard runtime dependency: Simulated (bundled inside Create: Aeronautics at runtime).
+    // Its POM pulls sable/curios/jei/ponder at compile and flywheel/veil/cc-tweaked at
+    // runtime, so dev runs are self-sufficient.
+    implementation "dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${simulated_version}"
+    implementation "dev.eriksonn.aeronautics:aeronautics-neoforge-${minecraft_version}:${aeronautics_version}"
+    implementation "dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}"
+    implementation("foundry.veil:veil-neoforge-${minecraft_version}:${veil_version}") {
+        exclude group: "maven.modrinth"
+        exclude group: "me.fallenbreath"
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-Xlint:deprecation')
+}
+tasks.withType(ProcessResources).configureEach {
+    def replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : project.version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml', '*.mixins.json']) {
+        expand replaceProperties
+    }
+}
+tasks.register('sourcesJar', Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+jar {
+    manifest {
+        attributes('FMLModType': 'MOD')
+    }
+}
+
+publishMods {
+    file = jar.archiveFile
+    type = STABLE
+    modLoaders.add("neoforge")
+    displayName = "${mod_name} ${mod_version} NeoForge ${minecraft_version}"
+
+    curseforge {
+        // TODO: fill in once the CurseForge project exists
+        projectId = ""
+        projectSlug = "create-more-docking-connectors"
+        accessToken = findProperty('curseforgePublishToken')
+        minecraftVersions.add("1.21.1")
+        requires("create")
+        requires("create-aeronautics")
+        client = true
+        server = true
+    }
+
+    modrinth {
+        // TODO: fill in once the Modrinth project exists
+        projectId = ""
+        accessToken = findProperty('modrinthPublishToken')
+        minecraftVersions.add("1.21.1")
+        requires("create")
+        requires("create-aeronautics")
+        requires("sable")
+    }
+
+//    discord {
+//        webhookUrl = findProperty('aztechDiscordPublishWebhook')
+//        username = "more docking connectors version bot"
+//        avatarUrl = "https://cataas.com/cat?width=500&height=500"
+//        style { look = "CLASSIC" }
+//    }
+}
