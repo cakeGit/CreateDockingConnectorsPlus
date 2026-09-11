@@ -46,3 +46,11 @@ modId="sable"
 type="required"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="tfmg"
+type="incompatible"
+reason="TFMG <= 1.2.2 is incompatible with Docking Connectors+. If TFMG 1.2.3 is not released yet, use Create: TFMG Community Edition or TFMG 1.2.2c which is available on the Bits 'n' Bobs mod page"
+ordering="AFTER"
+versionRange="(,1.2.2]"
+side="BOTH"
