@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "docking_connectors_plus:block/docking_pipe_connector/block"
+    }
+  }
+}

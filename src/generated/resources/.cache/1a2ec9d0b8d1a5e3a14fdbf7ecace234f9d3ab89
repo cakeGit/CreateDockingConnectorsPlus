@@ -1,0 +1,13 @@
+// 1.21.1	2026-09-11T17:04:00.573084618	Registrate Provider for docking_connectors_plus [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+4848889a37ded20595109ff754723a758e444971 assets/docking_connectors_plus/blockstates/docking_kinetic_connector.json
+d6e51463d112cead1b3c34c8f551cdec6e7656ef assets/docking_connectors_plus/blockstates/docking_pipe_connector.json
+ffe2e99040d15db1d6005b99abb99087af602fe6 assets/docking_connectors_plus/blockstates/paired_docking_kinetic_connector.json
+a843b418962d03de771405986124b9a38e40760b assets/docking_connectors_plus/blockstates/paired_docking_pipe_connector.json
+48651b6c8e3466675f4465f4db08026cfb9a14e7 assets/docking_connectors_plus/lang/en_ud.json
+0f684c167034041f01ea954964428db89f696b27 assets/docking_connectors_plus/lang/en_us.json
+6e8786317bee4d7c02599aacaa10677310d4900e assets/docking_connectors_plus/models/item/docking_kinetic_connector.json
+6a2fe028714d692896c364b8ea33bc769d404d8b assets/docking_connectors_plus/models/item/docking_pipe_connector.json
+b1715f3bf1fb02766c4ba9077f455490cf7dee69 data/create/tags/block/non_movable.json
+52edbaf47ed70cb88d0a05a53cdba8d327569a6a data/docking_connectors_plus/loot_table/blocks/docking_kinetic_connector.json
+47ae0cc32c1704fd3f8e5cea0b9711ef79d55c34 data/docking_connectors_plus/loot_table/blocks/docking_pipe_connector.json
+b1715f3bf1fb02766c4ba9077f455490cf7dee69 data/minecraft/tags/block/mineable/pickaxe.json

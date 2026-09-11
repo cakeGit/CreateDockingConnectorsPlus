@@ -1,6 +1,6 @@
 <center><strong>If you enjoy this mod, consider supporting the developer on <a href="https://ko-fi.com/cakeistasty" rel="nofollow">Ko-Fi</a>!</strong></center>
 
-# Create: More Docking Connectors
+# Create: Docking Connectors+
 
 Additional docking connector variants for Create:
 

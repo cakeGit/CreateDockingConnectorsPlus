@@ -1,9 +1,0 @@
-{
-  "block.more_docking_connectors.docking_kinetic_connector": "Docking Kinetic Connector",
-  "block.more_docking_connectors.docking_pipe_connector": "Docking Pipe Connector",
-  "block.more_docking_connectors.paired_docking_kinetic_connector": "Paired Docking Kinetic Connector",
-  "block.more_docking_connectors.paired_docking_pipe_connector": "Paired Docking Pipe Connector",
-  "more_docking_connectors.display_source.sublevel_name": "Contraption Name",
-  "more_docking_connectors.kinetic_connector.speed_mismatch": "Kinetic Networks Mismatch",
-  "more_docking_connectors.kinetic_connector.speed_mismatch_error": "It appears that this _Docking Kinetic Connector_ is linked to a kinetic network rotating in the _opposite direction_. Adjust one side's rotation until both networks _match_."
-}

@@ -106,7 +106,7 @@ neoForge {
         }
     }
     mods {
-        more_docking_connectors {
+        docking_connectors_plus {
             sourceSet project.sourceSets.main
         }
     }
@@ -188,20 +188,19 @@ publishMods {
     displayName = "${mod_name} ${mod_version} NeoForge ${minecraft_version}"
 
     curseforge {
-        // TODO: fill in once the CurseForge project exists
-        projectId = ""
-        projectSlug = "create-more-docking-connectors"
+        projectId = "1691346"
+        projectSlug = "create-docking-connectors-plus"
         accessToken = findProperty('curseforgePublishToken')
         minecraftVersions.add("1.21.1")
         requires("create")
         requires("create-aeronautics")
+        requires("sable")
         client = true
         server = true
     }
 
     modrinth {
-        // TODO: fill in once the Modrinth project exists
-        projectId = ""
+        projectId = "22zKNz13"
         accessToken = findProperty('modrinthPublishToken')
         minecraftVersions.add("1.21.1")
         requires("create")
@@ -211,7 +210,7 @@ publishMods {
 
 //    discord {
 //        webhookUrl = findProperty('aztechDiscordPublishWebhook')
-//        username = "more docking connectors version bot"
+//        username = "docking connectors plus version bot"
 //        avatarUrl = "https://cataas.com/cat?width=500&height=500"
 //        style { look = "CLASSIC" }
 //    }

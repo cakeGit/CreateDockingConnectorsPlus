@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "docking_connectors_plus:docking_kinetic_connector"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "docking_connectors_plus:blocks/docking_kinetic_connector"
+}

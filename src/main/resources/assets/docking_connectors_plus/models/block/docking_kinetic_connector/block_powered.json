@@ -1,0 +1,6 @@
+{
+	"parent": "docking_connectors_plus:block/docking_kinetic_connector/block",
+	"textures": {
+		"0": "docking_connectors_plus:block/kinetic_dock_powered"
+	}
+}
