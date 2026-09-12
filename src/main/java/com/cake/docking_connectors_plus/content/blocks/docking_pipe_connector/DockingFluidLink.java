@@ -1,9 +1,11 @@
 package com.cake.docking_connectors_plus.content.blocks.docking_pipe_connector;
 
+import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import net.createmod.catnip.math.BlockFace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
@@ -45,11 +47,40 @@ public class DockingFluidLink {
         return resolveNeighbour(level, blockFace.getPos(), blockFace.getFace());
     }
 
-    public static BlockFace resolve(final BlockGetter level, final BlockFace blockFace) {
-        return new BlockFace(resolveConnectedPos(level, blockFace), blockFace.getFace());
+    public static BlockFace resolveOpposite(final BlockGetter level, final BlockFace blockFace) {
+        final DockingPipeConnectorBlockEntity other = getLinkedConnector(level, blockFace.getPos(), blockFace.getFace());
+        return other == null ? blockFace.getOpposite() : new BlockFace(other.getBlockPos(), getPortFace(other));
     }
 
-    public static BlockFace resolveOpposite(final BlockGetter level, final BlockFace blockFace) {
-        return new BlockFace(resolveConnectedPos(level, blockFace), blockFace.getOppositeFace());
+    public static boolean isCrossing(final BlockGetter level, final BlockPos pos, final Direction face, final FluidTransportBehaviour otherPipe) {
+        if (!(otherPipe.blockEntity instanceof DockingPipeConnectorBlockEntity))
+            return false;
+
+        return getLinkedConnector(level, pos, face) != null;
+    }
+
+    public static Direction resolvePortFace(final BlockGetter level, final BlockPos pos, final Direction face, final Direction fallback) {
+        final DockingPipeConnectorBlockEntity other = getLinkedConnector(level, pos, face);
+        return other == null ? fallback : getPortFace(other);
+    }
+
+    public static Direction resolveProvidedFace(final BlockFace location, final FluidTransportBehaviour behaviour, final Direction fallback) {
+        if (!(behaviour.blockEntity instanceof DockingPipeConnectorBlockEntity farConnector))
+            return fallback;
+
+        final Level level = behaviour.getWorld();
+        if (level == null)
+            return fallback;
+
+        final DockingPipeConnectorBlockEntity other = getLinkedConnector(level, location.getPos(), location.getFace());
+        if (other != farConnector)
+            return fallback;
+
+        return getPortFace(farConnector);
+    }
+
+    private static Direction getPortFace(final DockingPipeConnectorBlockEntity connector) {
+        return connector.getBlockState()
+            .getValue(BlockStateProperties.FACING);
     }
 }

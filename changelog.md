@@ -4,3 +4,6 @@
 # 1.21.1-2.0.2
 - Properly documented TFMG incompatibility
 - Changed logo
+
+# 1.21.1-2.1.0
+- Fixed mismatch in pipe facing directions between sublevels
