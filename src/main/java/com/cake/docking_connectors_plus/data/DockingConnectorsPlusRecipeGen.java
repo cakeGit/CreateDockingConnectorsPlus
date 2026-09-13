@@ -30,7 +30,7 @@ public class DockingConnectorsPlusRecipeGen extends MechanicalCraftingRecipeGen 
             );
 
     private final GeneratedRecipe DOCKING_KINETIC_CONNECTOR = this.create(DockingConnectorBlocks.DOCKING_KINETIC_CONNECTOR::get)
-            .returns(1)
+            .returns(2)
             .recipe(b -> b
                     .patternLine("ICI")
                     .patternLine(" S ")
